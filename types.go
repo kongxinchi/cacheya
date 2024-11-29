@@ -2,7 +2,7 @@ package cacheya
 
 import "context"
 
-type Marshaler interface {
+type Marshaller interface {
 	Marshal(v any) ([]byte, error)
 	Unmarshal(data []byte, v any) error
 }
@@ -20,16 +20,16 @@ type Logger interface {
 	Error(ctx context.Context, message string, fields map[string]any)
 }
 
-func DefaultNopLogger() Logger {
-	return nopLogger{}
+func NewNoopLogger() Logger {
+	return &noopLogger{}
 }
 
-type nopLogger struct{}
+type noopLogger struct{}
 
-func (l nopLogger) Debug(ctx context.Context, message string, fields map[string]any) {}
-func (l nopLogger) Info(ctx context.Context, message string, fields map[string]any)  {}
-func (l nopLogger) Warn(ctx context.Context, message string, fields map[string]any)  {}
-func (l nopLogger) Error(ctx context.Context, message string, fields map[string]any) {}
+func (l *noopLogger) Debug(ctx context.Context, message string, fields map[string]any) {}
+func (l *noopLogger) Info(ctx context.Context, message string, fields map[string]any)  {}
+func (l *noopLogger) Warn(ctx context.Context, message string, fields map[string]any)  {}
+func (l *noopLogger) Error(ctx context.Context, message string, fields map[string]any) {}
 
 // Metrics 监控埋点接口
 type Metrics interface {
@@ -38,15 +38,15 @@ type Metrics interface {
 	Value(ctx context.Context, name string, value float64, labels map[string]string)
 }
 
-func DefaultNopMetrics() Metrics {
-	return nopMetrics{}
+func NewNoopMetrics() Metrics {
+	return &noopMetrics{}
 }
 
-type nopMetrics struct{}
+type noopMetrics struct{}
 
-func (m nopMetrics) Counter(ctx context.Context, name string, inc float64, labels map[string]string) {
+func (m *noopMetrics) Counter(ctx context.Context, name string, inc float64, labels map[string]string) {
 }
-func (m nopMetrics) Timer(ctx context.Context, name string, seconds float64, labels map[string]string) {
+func (m *noopMetrics) Timer(ctx context.Context, name string, seconds float64, labels map[string]string) {
 }
-func (m nopMetrics) Value(ctx context.Context, name string, value float64, labels map[string]string) {
+func (m *noopMetrics) Value(ctx context.Context, name string, value float64, labels map[string]string) {
 }

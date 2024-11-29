@@ -11,8 +11,8 @@ type Config struct {
 	ttl        time.Duration // 缓存超时时间，默认1h
 	ttlJitter  time.Duration // 缓存超时时间随机间隔上限，默认10s
 	cacheNil   bool          // 是否缓存nil
-	keyBuilder Builder       // 缓存key生成函数，默认拼接规则为：{prefix}:{account}:{key}
-	marshaler  Marshaler     // 序列化实现
+	keyBuilder Builder       // 缓存key生成函数，默认拼接规则为：{prefix}:{key}
+	marshaller Marshaller    // 序列化实现
 	compressor Compressor    // 压缩实现
 	metrics    Metrics       // 监控埋点
 	logger     Logger        // 日志
@@ -47,9 +47,9 @@ func CacheNil(cacheNil bool) Option {
 	}
 }
 
-func SetMarshaler(marshaler Marshaler) Option {
+func SetMarshaller(marshaller Marshaller) Option {
 	return func(c *Config) {
-		c.marshaler = marshaler
+		c.marshaller = marshaller
 	}
 }
 
